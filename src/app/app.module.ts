@@ -10,9 +10,11 @@ import { reducers } from './app-state';
 import { UnitEffects } from './app-state/effects/unit.effects';
 import { UnitDetailEffects } from './app-state/effects/unitDetail.effects';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { CoreService } from './_services/core.service';
+import { SmartTokenInterceptor } from './_infrastructure/smart_token_interceptor';
+import { AuthDataService } from './_services/auth-data.service';
 
 @NgModule({
   declarations: [
@@ -30,9 +32,18 @@ import { CoreService } from './_services/core.service';
     EffectsModule.forRoot([UnitEffects, UnitDetailEffects]),
     StoreRouterConnectingModule.forRoot()
   ],
-  providers: [CoreService],
+  providers: [
+    CoreService,
+    AuthDataService,
+    {   
+      provide: HTTP_INTERCEPTORS,
+      useClass: SmartTokenInterceptor, /* We use Angular Interceptor to add tokens to request automatically */
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
 
 
+  
