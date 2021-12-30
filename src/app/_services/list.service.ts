@@ -11,11 +11,11 @@ export class ListService {
 
   constructor(private http: HttpClient) { }
 
-  getListItems(): Observable<HttpResponse<IList>> {
+  getListItems(): Observable<IList> {
     let listID: number = 5363950 /* Our default list ID */
     let receipt = 'undefined';
     let httpParams = new HttpParams({ fromObject: { listID: listID, receipt: receipt } }); /* Create HTTP params for the request */
-    return this.http.get<HttpResponse<IList>>(BACK_END_API + "List/json/listItems.aspx", { params: httpParams });
+    return this.http.get<IList>(BACK_END_API + "myapi/List/json/listItems.aspx", { params: httpParams  }, );
   }
  
 

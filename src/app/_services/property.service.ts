@@ -11,10 +11,10 @@ export class PropertyService {
 
   constructor(private http: HttpClient) { }
 
-  getPropertyItem(propertyID: number): Observable<HttpResponse<IProperty>> {
+  getPropertyItem(propertyID: number): Observable<IProperty> {
     let listID: number = 5363950 /* Our default list ID */
     let httpParams = new HttpParams({ fromObject: { listID: listID, propertyID } }); /* Create HTTP params for the request */
-    return this.http.get<HttpResponse<IProperty>>(BACK_END_API + "List/json/propertyItem.aspx", { params: httpParams });
+    return this.http.get<IProperty>(BACK_END_API + "List/json/propertyItem.aspx", { params: httpParams });
   }
 
   // getOptions(): object {

@@ -18,9 +18,9 @@ export class SmartTokenInterceptor implements HttpInterceptor {
     injectToken(request: HttpRequest<any>) {
         let token = this.authDataService.getAccessToken /* This is a test token provided by Smart */
         return request.clone({
-            setParams: { token: token }
+            setParams: { token: token },
             // setHeaders: {
-            //     Authorization: `Bearer ${token}`
+            //     "referer": "https://my.smartapartmentdata.com/"
             // }
         });
     }

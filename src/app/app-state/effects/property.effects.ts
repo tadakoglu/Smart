@@ -16,7 +16,7 @@ export class PropertyEffects {
     setProperty$ = createEffect(() => this.actions$.pipe(
         ofType(propertyActions.setPropertyItem),
         exhaustMap(({ propertyId }) => this.service.getPropertyItem(propertyId).pipe(
-            map(resp => propertyActions.setPropertySuccess({ property: resp.body ?? new Property()})),
+            map(resp => propertyActions.setPropertySuccess({ property: resp })),
             catchError((err) => of(propertyActions.setPropertyFailed({ error: err }))))
         ))
     )

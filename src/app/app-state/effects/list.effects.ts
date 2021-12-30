@@ -15,7 +15,7 @@ export class ListEffects {
     setList$ = createEffect(() => this.actions$.pipe(
         ofType(listActions.setList),
         exhaustMap((props) => this.service.getListItems().pipe(
-            map(resp => listActions.setListSuccess({ list: resp.body ?? new List() })),
+            map(resp => listActions.setListSuccess({ list: resp })),
             catchError((err) => of(listActions.setListFailed({ error: err }))))
         )))
 
