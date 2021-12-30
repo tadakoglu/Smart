@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Record } from 'src/app/app-state/entity/list.model';
 
 @Component({
   selector: 'app-list-items',
@@ -11,5 +12,10 @@ export class ListItemsComponent implements OnInit {
 
   ngOnInit() {
   }
+  
+  @Input() records:Record[] = [];
+
+  @Output() onClickRecord = new EventEmitter<Record>();
+
 
 }

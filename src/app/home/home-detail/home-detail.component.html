@@ -1,2 +1,2 @@
-<app-property-item></app-property-item>
-<app-map></app-map>
+<app-property-item [property]="property"></app-property-item>
+<app-map [mapPoints]="[mapPoint]" (onClickRecord)="clickRecord($event)"></app-map>

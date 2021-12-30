@@ -6,12 +6,13 @@ import { MapComponent } from './components/map/map.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ListItemComponent } from './components/list-item/list-item.component';
 import { ListItemsFilterComponent } from './components/list-items-filter/list-items-filter.component';
+import { AgentInfoComponent } from './components/agent-info/agent-info.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [ListItemsComponent, ListItemsFilterComponent, ListItemComponent, PropertyItemComponent, MapComponent, FooterComponent],
-  exports: [ListItemsComponent, ListItemsFilterComponent, ListItemComponent, PropertyItemComponent, MapComponent, FooterComponent]
+  declarations: [AgentInfoComponent, ListItemsComponent, ListItemsFilterComponent, ListItemComponent, PropertyItemComponent, MapComponent, FooterComponent],
+  exports: [AgentInfoComponent, ListItemsComponent, ListItemsFilterComponent, ListItemComponent, PropertyItemComponent, MapComponent, FooterComponent]
 })
 export class CoreModule { }

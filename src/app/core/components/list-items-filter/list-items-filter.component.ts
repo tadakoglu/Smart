@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-list-items-filter',
@@ -11,5 +11,10 @@ export class ListItemsFilterComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  @Output() onMaxPriceFilterChange = new EventEmitter<number>();
+  @Output() onBedroomFilterChange = new EventEmitter<number[]>();
+  @Output() onIsFavoriteFilterChange = new EventEmitter<boolean>();
+
 
 }

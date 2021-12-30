@@ -1,14 +1,21 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { State } from "..";
-import { ListFilter } from "../entity/list.model";
+import { ListFilter, Record } from "../entity/list.model";
+import { MapPoint } from "../entity/mapPoint.model";
 import { ListState } from "../reducers/list.reducer";
 
 
 export const selectList = (appState: State) => appState.list
-export const selectListByFeatureSelector = createFeatureSelector<State>('list')
+// export const selectListByFeatureSelector = createFeatureSelector<State>('list')
+
+/* Select agent info of the list */
+export const selectAgentInfo = createSelector(selectList, (s: ListState) => s.list.agentInfo)
+
+/* Select current filter */
+export const selectFilter = (appState: State) => appState.list.filter
 
 
-/* This will be used to filter flats */
+/* Select filtered records of the list */
 export const selectRecordsByFilter = createSelector(selectList, (s: ListState) => s.list.records.
     filter((rec, index, recArr) => {
         let filter: ListFilter = s.filter // List filter
@@ -23,3 +30,6 @@ export const selectRecordsByFilter = createSelector(selectList, (s: ListState) =
             return false
         }
     }))
+
+
+

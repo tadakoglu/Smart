@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Property } from 'src/app/app-state/entity/property.model';
 
 @Component({
   selector: 'app-property-item',
@@ -11,5 +12,7 @@ export class PropertyItemComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  @Input() property:Property = <Property>{}
 
 }

@@ -1,2 +1,9 @@
-<app-list-items></app-list-items>
-<app-map></app-map>
+<app-agent-info [agentInfo]="agentInfo"></app-agent-info>
+
+<app-list-items-filter (onMaxPriceFilterChange)="setPriceFilter($event)"
+    (onBedroomFilterChange)="setRoomsFilter($event)" (onIsFavoriteFilterChange)="setFavoriteFilter($event)">
+</app-list-items-filter>
+
+<app-list-items [records]="records" (onClickRecord)="clickRecord($event)"></app-list-items>
+
+<app-map [mapPoints]="mapPoints" (onClickRecord)="clickRecord($event)"></app-map>
