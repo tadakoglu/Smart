@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { State } from 'src/app/app-state';
 import { selectProperty } from 'src/app/app-state/selectors/property.selectors';
 import * as PropertyActions from 'src/app/app-state/actions/property.actions'
@@ -17,23 +17,23 @@ import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
   styleUrls: ['./home-detail.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeDetailComponent implements OnInit {
+export class HomeDetailComponent implements OnInit, OnDestroy {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  public property: IProperty = new Property()
-  public mapPoint: IMapPoint = new MapPoint()
+
+  public property$: Observable<IProperty>
+  public mapPoint$: Observable<IMapPoint>
 
   constructor(private readonly store: Store<State>) {
-    this.store.select(selectProperty).pipe(takeUntil(this.destroy$)).subscribe(property => this.property = property)
-    this.store.select(selectMapPoint).pipe(takeUntil(this.destroy$)).subscribe(mapPoint => this.mapPoint = mapPoint)
-
+    this.property$ = this.store.select(selectProperty).pipe(takeUntil(this.destroy$))
+    this.mapPoint$ = this.store.select(selectMapPoint).pipe(takeUntil(this.destroy$))
   }
 
   ngOnInit() {
   }
 
-  loadProperty(){
+  loadProperty() {
     //this.store.dispatch(PropertyActions.setPropertyItem());
   }
 
@@ -41,5 +41,8 @@ export class HomeDetailComponent implements OnInit {
     let record: IRecord = $eventArgs;
     this.store.dispatch(PropertyActions.setPropertyItem({ propertyId: record.propertyID })) // That includes also "navigate to detail" effect
   }
-
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 }

@@ -1,2 +1,4 @@
-<app-property-item [property]="property"></app-property-item>
-<app-map [mapPoints]="[mapPoint]" (onClickRecord)="clickRecord($event)"></app-map>
+<h3>PROPERTY</h3>
+<app-property-item *ngrxLet="property$ as value" [property]="value"></app-property-item>
+<h3>MAP</h3>
+<app-map *ngrxLet="mapPoint$ as value" [mapPoints]="[value]" (onClickRecord)="clickRecord($event)"></app-map>

@@ -9,7 +9,7 @@ export class ListService {
 
   /* PLEAESE NOTE THAT JWT TOKENS ARE SENT THROUGH TOKEN INTERCEPTOR INFRASTRUCTURE AUTOMATICALLY */
 
-  constructor(private http: HttpClient) { }
+  constructor(protected http: HttpClient) { }
 
   getListItems(): Observable<IList> {
     let listID: number = 5363950 /* Our default list ID */

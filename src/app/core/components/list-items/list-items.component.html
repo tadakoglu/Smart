@@ -1,1 +1,1 @@
-<app-list-item *ngFor="let record of records" (click)="clickOnRecord(record)"></app-list-item>
+<app-list-item *ngFor="let record of records" [record]="record" (click)="clickOnRecord(record)"></app-list-item>

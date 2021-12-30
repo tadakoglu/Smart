@@ -9,7 +9,7 @@ export class PropertyService {
 
   /* PLEAESE NOTE THAT JWT TOKENS ARE SENT THROUGH TOKEN INTERCEPTOR INFRASTRUCTURE AUTOMATICALLY */
 
-  constructor(private http: HttpClient) { }
+  constructor(protected http: HttpClient) { }
 
   getPropertyItem(propertyID: number): Observable<IProperty> {
     let listID: number = 5363950 /* Our default list ID */

@@ -5,7 +5,7 @@ import { selectAgentInfo, selectFilter, selectRecordsByFilter } from 'src/app/ap
 import * as ListActions from 'src/app/app-state/actions/list.actions'
 import * as PropertyActions from 'src/app/app-state/actions/property.actions'
 
-import { Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { selectMapPoints } from 'src/app/app-state/selectors/map.selectors';
 import { AgentInfo, ListFilter } from 'src/app/app-state/entity/concrete/list.model';
 import { IAgentInfo, IListFilter, IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
@@ -22,25 +22,25 @@ export class HomeComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   // public agentInfo: Observable<AgentInfo> // This can also be used with | async pipe so auto subscription
-  // public records: Observable<Record[]> // This can also be used with | async pipe so auto subscription
+  //public records: Observable<IRecord[]> // This can also be used with | async pipe so auto subscription
 
-  public agentInfo: IAgentInfo = new AgentInfo()
-  public filter: IListFilter = new ListFilter()
-  public records: IRecord[] = []
-  public mapPoints: IMapPoint[] = []
+  public agentInfo$: Observable<IAgentInfo>
+  public filter$: Observable<IListFilter>
+  public records$: Observable<IRecord[]>
+  public mapPoints$: Observable<IMapPoint[]>
 
   constructor(private readonly store: Store<State>) {
     this.loadList();
-    this.store.select(selectAgentInfo).pipe(takeUntil(this.destroy$)).subscribe(agentInto => this.agentInfo = agentInto)
-    this.store.select(selectFilter).pipe(takeUntil(this.destroy$)).subscribe(filter => this.filter = filter)
-    this.store.select(selectRecordsByFilter).pipe(takeUntil(this.destroy$)).subscribe(records => this.records = records);
-    this.store.select(selectMapPoints).pipe(takeUntil(this.destroy$)).subscribe(mps => this.mapPoints = mps);
+    this.agentInfo$ = this.store.select(selectAgentInfo).pipe(takeUntil(this.destroy$))
+    this.filter$= this.store.select(selectFilter).pipe(takeUntil(this.destroy$))
+    this.records$ = this.store.select(selectRecordsByFilter).pipe(takeUntil(this.destroy$))
+    this.mapPoints$ = this.store.select(selectMapPoints).pipe(takeUntil(this.destroy$))
   }
 
   ngOnInit() {
   }
 
-  loadList(){
+  loadList() {
     this.store.dispatch(ListActions.setList());
   }
 

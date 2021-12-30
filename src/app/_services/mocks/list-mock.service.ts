@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { IList } from 'src/app/app-state/entity/abstract/i-list.model';
+import { List } from 'src/app/app-state/entity/concrete/list.model';
 import { ListService } from '../list.service';
+import SMART_LIST from './data/list.json';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ListMockService extends ListService {
-
+@Injectable()
+export default class ListMockService extends ListService {
 
   override getListItems(): Observable<IList> {
-    throw new Error('Method not implemented.');
+    return this.http.get<IList>('/assets/data/list.json');
   }
 
 }

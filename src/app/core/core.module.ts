@@ -7,6 +7,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ListItemComponent } from './components/list-item/list-item.component';
 import { ListItemsFilterComponent } from './components/list-items-filter/list-items-filter.component';
 import { AgentInfoComponent } from './components/agent-info/agent-info.component';
+import { ReactiveComponentModule } from '@ngrx/component';
 
 @NgModule({
   imports: [

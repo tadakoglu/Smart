@@ -6,17 +6,19 @@ import { of } from 'rxjs'
 import { PropertyService } from 'src/app/_services/property.service';
 import { Router } from '@angular/router';
 import { Property } from '../entity/concrete/property.model';
+import PropertyMockService from 'src/app/_services/mocks/property-mock.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PropertyEffects {
-    constructor(private actions$: Actions, private service: PropertyService, private router: Router) { }
+    constructor(private actions$: Actions, private service: PropertyMockService, private router: Router) { }
 
     setProperty$ = createEffect(() => this.actions$.pipe(
         ofType(propertyActions.setPropertyItem),
         exhaustMap(({ propertyId }) => this.service.getPropertyItem(propertyId).pipe(
-            map(resp => propertyActions.setPropertySuccess({ property: resp })),
+            map(resp => 
+                propertyActions.setPropertySuccess({ property: resp })),
             catchError((err) => of(propertyActions.setPropertyFailed({ error: err }))))
         ))
     )

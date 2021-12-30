@@ -6,11 +6,12 @@ import { of } from 'rxjs'
 import { ListService } from 'src/app/_services/list.service';
 import { IList } from '../entity/abstract/i-list.model';
 import { List } from '../entity/concrete/list.model';
+import ListMockService from 'src/app/_services/mocks/list-mock.service';
 @Injectable({
     providedIn: 'root'
 })
 export class ListEffects {
-    constructor(private actions$: Actions, private service: ListService) { }
+    constructor(private actions$: Actions, private service: ListMockService) { }
 
     setList$ = createEffect(() => this.actions$.pipe(
         ofType(listActions.setList),

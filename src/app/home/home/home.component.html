@@ -1,9 +1,13 @@
-<app-agent-info [agentInfo]="agentInfo"></app-agent-info>
+<!-- Note that *ngrxLet="agentInfo$ as value" can also be used for instead of ngIf-->
 
-<app-list-items-filter (onMaxPriceFilterChange)="setPriceFilter($event)"
+<h3>AGENT INFO</h3>
+<app-agent-info *ngrxLet="agentInfo$ as value" [agentInfo]="value"></app-agent-info>
+<h3>LIST FILTER</h3>
+<app-list-items-filter *ngIf="filter$ | async as value" (onMaxPriceFilterChange)="setPriceFilter($event)"
     (onBedroomFilterChange)="setRoomsFilter($event)" (onIsFavoriteFilterChange)="setFavoriteFilter($event)">
 </app-list-items-filter>
-
-<app-list-items [records]="records" (onClickRecord)="clickRecord($event)"></app-list-items>
-
-<app-map [mapPoints]="mapPoints" (onClickRecord)="clickRecord($event)"></app-map>
+<h3>LIST</h3>
+<app-list-items *ngIf="records$ | async as value" [records]="value" (onClickRecord)="clickRecord($event)">
+</app-list-items>
+<h3>MAP</h3>
+<app-map *ngIf="mapPoints$ | async as value" [mapPoints]="value" (onClickRecord)="clickRecord($event)"></app-map>

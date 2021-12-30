@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 
   /* Since we use immutable objects through NGRX state manager 
-  we can optimize app speed with OnPush not to check for changes anytime, instead for checking on object reference change */
+  we can optimize app speed with OnPush not to check for changes anytime */
   /* Reference : https://github.com/tadakoglu/change-detection-tree */
 
 })

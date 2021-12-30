@@ -16,6 +16,9 @@ import { AuthDataService } from './_services/auth-data.service';
 import { ListService } from './_services/list.service';
 import { PropertyService } from './_services/property.service';
 import { PropertyEffects } from './app-state/effects/property.effects';
+import ListMockService from './_services/mocks/list-mock.service';
+import PropertyMockService from './_services/mocks/property-mock.service';
+import { ReactiveComponentModule } from '@ngrx/component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,9 @@ import { PropertyEffects } from './app-state/effects/property.effects';
   ],
   providers: [
     ListService,
+    ListMockService,
     PropertyService,
+    PropertyMockService,
     AuthDataService,
     {
       provide: HTTP_INTERCEPTORS,
