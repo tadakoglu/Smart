@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AgentInfo } from 'src/app/app-state/entity/list.model';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { IAgentInfo } from 'src/app/app-state/entity/abstract/i-list.model';
+import { AgentInfo } from 'src/app/app-state/entity/concrete/list.model';
 
 @Component({
   selector: 'app-agent-info',
   templateUrl: './agent-info.component.html',
-  styleUrls: ['./agent-info.component.css']
+  styleUrls: ['./agent-info.component.css'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class AgentInfoComponent implements OnInit {
 
@@ -13,6 +15,6 @@ export class AgentInfoComponent implements OnInit {
   ngOnInit() {
   }
 
-  @Input() agentInfo:AgentInfo = <AgentInfo>{};
+  @Input() agentInfo:IAgentInfo = new AgentInfo()
 
 }

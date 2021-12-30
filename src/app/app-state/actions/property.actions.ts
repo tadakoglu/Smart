@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Property } from '../entity/property.model';
+import { IProperty } from '../entity/abstract/i-property.model';
 
 
 export const setPropertyItem = createAction(
@@ -9,7 +9,7 @@ export const setPropertyItem = createAction(
 
 export const setPropertySuccess = createAction(
     '[Home Detail Page] SET_PROPERTY_ITEM_SUCCESS',
-    props<{ property: Property }>()
+    props<{ property: IProperty }>()
 );
 export const setPropertyFailed = createAction(
     '[Home Detail Page] SET_PROPERTY_ITEM_FAILED',

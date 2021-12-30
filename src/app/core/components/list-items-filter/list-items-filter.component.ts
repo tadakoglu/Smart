@@ -1,9 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-list-items-filter',
   templateUrl: './list-items-filter.component.html',
-  styleUrls: ['./list-items-filter.component.css']
+  styleUrls: ['./list-items-filter.component.css'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class ListItemsFilterComponent implements OnInit {
 

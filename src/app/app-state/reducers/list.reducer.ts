@@ -1,16 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
 import * as listActions from '../actions/list.actions';
 import * as _ from 'lodash'
-import { List, ListFilter } from '../entity/list.model';
+import { IList, IListFilter } from '../entity/abstract/i-list.model';
+import { List, ListFilter } from '../entity/concrete/list.model';
 
 export interface ListState {
-    list: List;
-    filter:ListFilter
+    list: IList;
+    filter:IListFilter
 };
 
+
 const initialState: ListState = {
-    list: <List>{},
-    filter: { maxPrice: 1995, roomCounts: [0, 1, 2, 3], isFavorite: false }
+    list: new List(),
+    filter: new ListFilter()
 };
 
 export const reducer = createReducer(
@@ -21,7 +23,7 @@ export const reducer = createReducer(
     ),
     on(listActions.setListSuccess,
         (state, { list }) => {
-            let listClone:List = _.cloneDeep(list) // for immutability
+            let listClone:IList = _.cloneDeep(list) // for immutability
             return { ...state, list: listClone };
         }
     ),

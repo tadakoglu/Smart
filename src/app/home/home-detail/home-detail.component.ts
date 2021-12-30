@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import { State } from 'src/app/app-state';
-import { Record } from 'src/app/app-state/entity/list.model';
-import { Property } from 'src/app/app-state/entity/property.model';
 import { selectProperty } from 'src/app/app-state/selectors/property.selectors';
-import * as ListActions from 'src/app/app-state/actions/list.actions'
 import * as PropertyActions from 'src/app/app-state/actions/property.actions'
 import { selectMapPoint } from 'src/app/app-state/selectors/map.selectors';
-import { MapPoint } from 'src/app/app-state/entity/mapPoint.model';
+import { Property } from 'src/app/app-state/entity/concrete/property.model';
+import { MapPoint } from 'src/app/app-state/entity/concrete/map-point.model';
+import { IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
+import { IProperty } from 'src/app/app-state/entity/abstract/i-property.model';
+import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
 
 @Component({
   selector: 'app-home-detail',
@@ -20,8 +21,8 @@ export class HomeDetailComponent implements OnInit {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  public property: Property = <Property>{}
-  public mapPoint: MapPoint = <MapPoint>{}
+  public property: IProperty = new Property()
+  public mapPoint: IMapPoint = new MapPoint()
 
   constructor(private readonly store: Store<State>) {
     this.store.select(selectProperty).pipe(takeUntil(this.destroy$)).subscribe(property => this.property = property)
@@ -32,9 +33,12 @@ export class HomeDetailComponent implements OnInit {
   ngOnInit() {
   }
 
+  loadProperty(){
+    //this.store.dispatch(PropertyActions.setPropertyItem());
+  }
 
   clickRecord($eventArgs: any) {
-    let record: Record = $eventArgs;
+    let record: IRecord = $eventArgs;
     this.store.dispatch(PropertyActions.setPropertyItem({ propertyId: record.propertyID })) // That includes also "navigate to detail" effect
   }
 

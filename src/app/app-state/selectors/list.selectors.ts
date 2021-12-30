@@ -1,7 +1,6 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { State } from "..";
-import { ListFilter, Record } from "../entity/list.model";
-import { MapPoint } from "../entity/mapPoint.model";
+import { IListFilter } from "../entity/abstract/i-list.model";
 import { ListState } from "../reducers/list.reducer";
 
 
@@ -18,7 +17,7 @@ export const selectFilter = (appState: State) => appState.list.filter
 /* Select filtered records of the list */
 export const selectRecordsByFilter = createSelector(selectList, (s: ListState) => s.list.records.
     filter((rec, index, recArr) => {
-        let filter: ListFilter = s.filter // List filter
+        let filter: IListFilter = s.filter // List filter
 
         let floorCondition = rec.floorplans.find(rfp => (rfp.price <= filter.maxPrice) && (filter.roomCounts.includes(rfp.bedrooms))) ?? false; // Max price and bedroom conditions
         let favoriteCondition: boolean = rec.favorite; // Favorite condition

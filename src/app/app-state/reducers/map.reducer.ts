@@ -1,11 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 import * as mapActions from '../actions/map.actions';
 import * as _ from 'lodash'
-import { Geocode } from '../entity/geocode.model';
-import { MapPoint } from '../entity/mapPoint.model';
+import { IMapPoint } from '../entity/abstract/i-map-point.model';
 
 export interface MapState {
-    mapPoints: MapPoint[];
+    mapPoints: IMapPoint[];
 };
 
 const initialState: MapState = {

@@ -1,9 +1,10 @@
 /* http://json2ts.com/ used for JSON TO TS models */
 /* Interface can be type-safe initiated like officeData: IOffice= <IOffice>{}; or */
 
-import { Geocode } from "./geocode.model";
+import { IGeocode } from "./i-geocode.model";
 
-export interface AgentInfo {
+
+export interface IAgentInfo {
     accountID: number;
     firstname: string;
     lastname: string;
@@ -12,13 +13,13 @@ export interface AgentInfo {
     customHeader: string;
 }
 
-export interface Floorplan {
+export interface IFloorplan {
     bedrooms: number;
     type: string;
     price: number;
 }
 
-export interface Record {
+export interface IRecord {
     listID: number;
     order: number;
     propertyID: number;
@@ -37,22 +38,22 @@ export interface Record {
     section8: boolean;
     seniorHousing: boolean;
     studentHousting: boolean;
-    floorplans: Floorplan[];
+    floorplans: IFloorplan[];
     highValueAmenities: string[];
     paidUtilities: string[];
-    geocode: Geocode;
+    geocode: IGeocode;
 }
 
-export interface ListFilter {
+export interface IListFilter {
     maxPrice: number;
     roomCounts: number[];
     isFavorite: boolean;
 }
 
 /* Root model, the rest are helper models */
-export interface List {
-    agentInfo: AgentInfo;
-    records: Record[];
+export interface IList {
+    agentInfo: IAgentInfo;
+    records: IRecord[];
     showContactInfo: boolean;
     role: string;
     title: string;

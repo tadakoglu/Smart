@@ -1,9 +1,10 @@
 /* http://json2ts.com/ used for JSON TO TS models */
 /* Interface can be type-safe initiated like officeData: IOffice= <IOffice>{}; */
 
-import { Geocode } from "./geocode.model";
+import { IGeocode } from "./i-geocode.model";
 
-export interface Parking {
+
+export interface IParking {
     propertyID: number;
     reserved: boolean;
     reservedFeeMin: number;
@@ -21,7 +22,7 @@ export interface Parking {
     attached: boolean;
 }
 
-export interface SchoolsInfo {
+export interface ISchoolsInfo {
     propertyID: number;
     district: string;
     elementry: string;
@@ -30,7 +31,7 @@ export interface SchoolsInfo {
     high: string;
 }
 
-export interface PetInfo {
+export interface IPetInfo {
     allowed: boolean;
     extraRent: number;
     limit: number;
@@ -39,7 +40,7 @@ export interface PetInfo {
     nonRefundableFee: number;
 }
 
-export interface Floorplan {
+export interface IFloorplan {
     floorplanID: number;
     bed: number;
     bath: number;
@@ -56,7 +57,7 @@ export interface Floorplan {
 }
 
 /* Root model, the rest are helper models */
-export interface Property {
+export interface IProperty {
     listID: number;
     propertyID: number;
     yearBuilt: number;
@@ -72,15 +73,15 @@ export interface Property {
     favorite: boolean;
     notes: string;
     specials: string;
-    parking: Parking;
-    schoolsInfo: SchoolsInfo;
-    petInfo: PetInfo;
+    parking: IParking;
+    schoolsInfo: ISchoolsInfo;
+    petInfo: IPetInfo;
     paidUtilities: any[];
-    floorplans: Floorplan[];
+    floorplans: IFloorplan[];
     highValueAmenities: string[];
     unitAmenities: string[];
     propertyAmenities: string[];
-    geocode: Geocode;
+    geocode: IGeocode;
     photos: string[];
     section8: boolean;
     studentHousting: boolean;

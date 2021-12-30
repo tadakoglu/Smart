@@ -5,6 +5,7 @@ import { catchError, exhaustMap, map, tap } from 'rxjs/operators'
 import { of } from 'rxjs'
 import { PropertyService } from 'src/app/_services/property.service';
 import { Router } from '@angular/router';
+import { Property } from '../entity/concrete/property.model';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ export class PropertyEffects {
     setProperty$ = createEffect(() => this.actions$.pipe(
         ofType(propertyActions.setPropertyItem),
         exhaustMap(({ propertyId }) => this.service.getPropertyItem(propertyId).pipe(
-            map(resp => propertyActions.setPropertySuccess({ property: resp.body })),
+            map(resp => propertyActions.setPropertySuccess({ property: resp.body ?? new Property()})),
             catchError((err) => of(propertyActions.setPropertyFailed({ error: err }))))
         ))
     )

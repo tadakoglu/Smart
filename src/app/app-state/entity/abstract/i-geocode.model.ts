@@ -1,5 +1,5 @@
 
-export interface Geocode {
+export interface IGeocode {
     Longitude: string;
     Latitude: string;
     Percision: string;

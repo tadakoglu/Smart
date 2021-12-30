@@ -4,11 +4,15 @@ import { PropertyState } from "./reducers/property.reducer";
 import { RouterState, routerReducer } from "@ngrx/router-store";
 import * as listReducer from './reducers/list.reducer'
 import * as propertyReducer from './reducers/property.reducer'
+import * as mapReducer from './reducers/map.reducer'
+
+import { MapState } from "./reducers/map.reducer";
 
 export interface State {
     router: RouterState,
     list: ListState,
-    property: PropertyState
+    property: PropertyState,
+    map: MapState
 }
 
 /* Map states to reducers for app module */
@@ -16,5 +20,6 @@ export interface State {
 export const reducers: ActionReducerMap<State> = {
     router: routerReducer,
     list: listReducer.reducer,
-    property: propertyReducer.reducer 
+    property: propertyReducer.reducer,
+    map: mapReducer.reducer
 }

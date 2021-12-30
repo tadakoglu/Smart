@@ -1,12 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { List } from '../entity/list.model';
+import { IList } from '../entity/abstract/i-list.model';
 
 export const setList = createAction(
     '[Home Page] SET_LIST_ITEMS');
 
 export const setListSuccess = createAction(
     '[Home Page] SET_LIST_ITEMS_SUCCESS',
-    props<{ list: List }>()
+    props<{ list: IList }>()
 );
 export const setListFailed = createAction(
     '[Home Page] SET_LIST_ITEMS_FAILED',

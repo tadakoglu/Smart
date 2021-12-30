@@ -1,5 +1,1 @@
-<p>
-  list-items works!
-</p>
-<app-list-items-filter></app-list-items-filter>
-<app-list-item></app-list-item>
+<app-list-item *ngFor="let record of records" (click)="clickOnRecord(record)"></app-list-item>

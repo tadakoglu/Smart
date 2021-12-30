@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Property } from 'src/app/app-state/entity/property.model';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { IProperty } from 'src/app/app-state/entity/abstract/i-property.model';
+import { Property } from 'src/app/app-state/entity/concrete/property.model';
 
 @Component({
   selector: 'app-property-item',
   templateUrl: './property-item.component.html',
-  styleUrls: ['./property-item.component.css']
+  styleUrls: ['./property-item.component.css'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class PropertyItemComponent implements OnInit {
 
@@ -13,6 +15,6 @@ export class PropertyItemComponent implements OnInit {
   ngOnInit() {
   }
 
-  @Input() property:Property = <Property>{}
+  @Input() property:IProperty = new Property()
 
 }

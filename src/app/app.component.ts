@@ -12,5 +12,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 })
 export class AppComponent {
-  title = 'Smart-Tayfun';
+  title = 'Smart-Tayfun-Adakoğlu';
 }
