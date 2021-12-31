@@ -11,6 +11,7 @@ export const selectPropertyByFeatureSelector = createFeatureSelector<State>('pro
 
 
 export const selectMapPoints = createSelector(selectRecordsByFilter, (records: IRecord[]) =>
-    records.map(rec => <IMapPoint>{ propertyId: rec.propertyID, geocode: rec.geocode }))
+    records.map(rec => <IMapPoint>{ properties: { propertyId: rec.propertyID.toString() }, geocode: rec.geocode }))
 
-export const selectMapPoint = createSelector(selectProperty, (p: IProperty ) => <IMapPoint>{ propertyId: p.propertyID, geocode: p.geocode})
+export const selectMapPoint = createSelector(selectProperty, (p: IProperty) =>
+    <IMapPoint>{ properties: { propertyId: p.propertyID.toString() }, geocode: p.geocode })
