@@ -19,6 +19,8 @@ import { PropertyEffects } from './app-state/effects/property.effects';
 import ListMockService from './_services/mocks/list-mock.service';
 import PropertyMockService from './_services/mocks/property-mock.service';
 import { ReactiveComponentModule } from '@ngrx/component';
+import { MapService } from './_services/map.service';
+import { MapEffects } from './app-state/effects/map.effects';
 
 @NgModule({
   declarations: [
@@ -33,10 +35,11 @@ import { ReactiveComponentModule } from '@ngrx/component';
     HttpClientModule,
     CoreModule, /* We'll use this module for common used components */
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([ListEffects, PropertyEffects]),
+    EffectsModule.forRoot([ListEffects, PropertyEffects,MapEffects]),
     StoreRouterConnectingModule.forRoot()
   ],
   providers: [
+    MapService,
     ListService,
     ListMockService,
     PropertyService,

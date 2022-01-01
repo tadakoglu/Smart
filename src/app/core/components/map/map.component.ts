@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import * as GeoJSON from 'geojson';
 import * as maplibregl from 'maplibre-gl';
 import { Map, Marker, NavigationControl } from 'maplibre-gl';
+import { concatMap, filter, startWith, Subject, Subscription, takeUntil } from 'rxjs';
 import { IGeojson } from 'src/app/app-state/entity/abstract/i-geo-json.model';
 import { IGeolibreSource } from 'src/app/app-state/entity/abstract/i-geo-libre-source.model';
 import { IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
 import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
 import { Geojson } from 'src/app/app-state/entity/concrete/geo-json.model';
 import { GeolibreSource } from 'src/app/app-state/entity/concrete/geo-libre-soure.model';
-import { MAPTILER_API_KEY, MAPTILER_MAP_STYLE } from 'src/app/_infrastructure/contstants';
+import { MAPTILER_API_KEY, MAPTILER_MAP_DEFAULT_MARKER, MAPTILER_MAP_STYLE } from 'src/app/_infrastructure/contstants';
 import { MapService } from 'src/app/_services/map.service';
 @Component({
   selector: 'app-map',
@@ -18,74 +19,57 @@ import { MapService } from 'src/app/_services/map.service';
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  map: Map | undefined;
-  constructor(private mapService: MapService) { }
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
+  map!: Map;
+  constructor(private mapService: MapService) {}
 
   ngOnInit() { }
 
   ngAfterViewInit() {
-    // const initialState = { lng: 0, lat: 0, zoom: 15 };
     const api_key = MAPTILER_API_KEY
     const map_style = MAPTILER_MAP_STYLE;
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style: `${map_style}?key=${api_key}`,
-      // center: [initialState.lng, initialState.lat],
-      // zoom: initialState.zoom,
       interactive: true
     });
-
     this.map.addControl(new NavigationControl(), 'top-right');
-
     this.map.on('load', (map) => {
-      map.target.loadImage('/assets/markers/marker-pink.png', (error: any, image: any) => {
+      map.target.loadImage(MAPTILER_MAP_DEFAULT_MARKER, (error: any, image: any) => {
         if (error) throw error;
-        map.target.addImage('custom-marker', image);
+        map.target.addImage('smart-marker', image);
       })
-      map.target.addSource("points", this.createSourceJSON(this.mapPoints));
+      map.target.addSource("points", this.getSourceJSON(this.mapPoints));
 
       map.target.addLayer({
         "id": "symbols",
         "type": "symbol",
         "source": "points",
         "layout": {
-          "icon-image": "custom-marker"
+          "icon-image": "smart-marker"
         }
       });
-      this.fitBounds(map.target,this.mapPoints);//first initialization
-      this.mapService.boundsToNotifier.subscribe(()=>{
-        this.fitBounds(map.target,this.mapPoints);
+
+
+      this.mapService.boundsToNotifier.pipe(takeUntil(this.destroy$), startWith(this.mapPoints)).subscribe(() => {
+        this.fitBounds(this.map, this.mapPoints);
+      })
+      this.mapService.flyToNotifier.pipe(takeUntil(this.destroy$)).subscribe(val => {
+        this.flyTo(this.map, val);
       })
 
-      this.mapService.flyToNotifier.subscribe(val=>{
-        map.target.flyTo({
-          center: val,
-          duration: 1250,
-          zoom: 15
-        });
-      })
-      
-      // this.fitBounds(map.target,this.mapPoints);
+
     });
-    
     this.map.on('click', 'symbols', (e: any) => {
       this.onClickRecord.emit(e.features[0].properties.propertyId)
-      // e.target.flyTo({
-      //   center: e.features[0].geometry.coordinates,
-      //   duration: 1250,
-      //   zoom: 15
-      // });
-
     });
-
-
-
   }
   ngOnDestroy(): void {
     this.map?.remove();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
-
 
 
   @ViewChild('map')
@@ -94,7 +78,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() mapPoints: IMapPoint[] = []; /* These includes PropertyIds and Geocodes */
 
   // Note that initializer design patterns can be used here but because values are pretty long, I won't use it here to make the code more readible
-  createSourceJSON(mapPoints: IMapPoint[]): any {
+  getSourceJSON(mapPoints: IMapPoint[]): any {
 
     let geojsonArray: IGeojson[] = mapPoints.map(point => {
       let geojson: IGeojson = new Geojson();
@@ -110,10 +94,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return source
   }
-
   fitBounds(map: Map, mapPoints: IMapPoint[]): any {
-    let lots = mapPoints.map(p => parseFloat(p.geocode.Longitude))
-    let lats = mapPoints.map(p => parseFloat(p.geocode.Latitude))
+    let lots: number[] = mapPoints.map(p => parseFloat(p.geocode.Longitude))
+    let lats: number[] = mapPoints.map(p => parseFloat(p.geocode.Latitude))
 
     let longtitude = { min: Math.min(...lots), max: Math.max(...lots) }
     let latitude = { min: Math.min(...lats), max: Math.max(...lats) }
@@ -122,6 +105,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       [longtitude.min, latitude.min],
       [longtitude.max, latitude.max],
     ]);
+
+  }
+  flyTo(map: Map, val: maplibregl.LngLat): any {
+    map.flyTo({
+      center: val,
+      duration: 1250,
+      zoom: 15
+    });
 
   }
   @Output() onClickRecord = new EventEmitter<number>();

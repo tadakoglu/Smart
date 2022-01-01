@@ -1,18 +1,7 @@
-.list{
+:host{
     display: flex;
     flex-direction: column;
-    height: 30vh;
-    
-   
-}
-.list-item{
-    height: 50px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.list-item:hover{
-    background-color: #e6e4e4;
-    transition: 0.3s;
+    height: 50vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

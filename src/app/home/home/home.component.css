@@ -1,7 +1,6 @@
-.container{
+:host{
     display: flex;
     flex-direction: row;
-    
 }
 .col-left{
     width: 20%;

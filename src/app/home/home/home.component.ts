@@ -7,6 +7,7 @@ import { selectMapPoints } from 'src/app/app-state/selectors/map.selectors';
 import { IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
 import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
 import * as ListActions from 'src/app/app-state/actions/list.actions'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -20,19 +21,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public mapPoints$: Observable<IMapPoint[]>
 
-  constructor(private readonly store: Store<State>,) {
+  constructor(private readonly store: Store<State>, private activatedRoute: ActivatedRoute) {
+    this.store.dispatch(ListActions.setList());
     this.mapPoints$ = this.store.select(selectMapPoints).pipe(takeUntil(this.destroy$))
   }
 
-  ngOnInit() {
-   
-  }
+  ngOnInit() {}
 
-  clickRecord($eventArgs: any) {
+  clickRecordOnTheMap($eventArgs: any) {
     let propertyId: number = $eventArgs;
-    this.store.dispatch(PropertyActions.setPropertyItem({ propertyId: propertyId })) 
-    this.store.dispatch(PropertyActions.navigateToProperty({ propertyId: propertyId })) 
-
+    // this.store.dispatch(PropertyActions.setPropertyItem({ propertyId: propertyId })) 
+    this.store.dispatch(PropertyActions.navigateToProperty({ propertyId: propertyId }))
   }
   ngOnDestroy() {
     this.destroy$.next(true);

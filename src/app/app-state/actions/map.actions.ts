@@ -10,15 +10,9 @@ export const setMap = createAction(
 
 export const flyToMapPoint = createAction(
     '[Home Page, Home Detail Page] FLY_TO_MAP',
-    props<{ mapPoint: IMapPoint }>()
+    props<{ mapPoint: maplibregl.LngLat }>()
 );
 
 export const fitMapBoundsTo = createAction(
-    '[Home Page, Home Detail Page] FIT_MAP_BOUNDS_TO',
-    props<{
-        bounds: [
-            [number, number],
-            [number, number],
-        ]
-    }>()
+    '[Home Page, Home Detail Page] FIT_MAP_BOUNDS_TO'
 );

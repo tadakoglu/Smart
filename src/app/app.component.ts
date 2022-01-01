@@ -15,13 +15,8 @@ import * as ListActions from 'src/app/app-state/actions/list.actions'
 
 })
 export class AppComponent implements OnInit {
-  /**
-   *
-   */
-  constructor(private readonly store: Store<State>) {
-    
-    this.store.dispatch(ListActions.setList());
-  }
+  
+  constructor(private readonly store: Store<State>) {}
   ngOnInit(): void {
    
 

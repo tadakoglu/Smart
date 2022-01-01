@@ -4,7 +4,7 @@ import { State } from 'src/app/app-state';
 import { selectListState, selectRecordsByFilter } from 'src/app/app-state/selectors/list.selectors';
 import * as ListActions from 'src/app/app-state/actions/list.actions'
 import * as PropertyActions from 'src/app/app-state/actions/property.actions'
-import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { IListFilter, IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
 import { ListState } from 'src/app/app-state/reducers/list.reducer';
 import { Record } from 'src/app/app-state/entity/concrete/list.model';
@@ -26,18 +26,14 @@ export class ListViewComponent implements OnInit, OnDestroy {
 
   constructor(private readonly store: Store<State>, private activatedRoute: ActivatedRoute, private mapService: MapService) {
     this.listState$ = this.store.select(selectListState).pipe(takeUntil(this.destroy$))
-    // bound to operation on init
   }
-  public paramsSub$: any
+
   ngOnInit() {
-
-    this.paramsSub$ = this.activatedRoute.params.subscribe(val => {
+    // when list view activated, show all pins on the map
+    this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe(val => {
       console.log("list view reactivated ")
-      this.mapService.boundsToNotifier.next()
-    });
-
-
-
+      this.mapService.boundsToNotifier.next() 
+    })
   }
 
   setFilter($eventArgs: any) {

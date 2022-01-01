@@ -22,30 +22,28 @@ export class MapEffects {
 
     /* We will navigate to property page after setting its values, this is a setProperty helper effect */
    
-    // fitMapBoundsTo$ = createEffect(
-    //     () => this.actions$.pipe(
-    //         ofType(mapActions.fitMapBoundsTo),
-            
-    //         map(bounds => {
-    //             let bs =new maplibregl.LngLatBounds(parseFloat(args.mapPoint.geocode.Longitude), parseFloat(args.mapPoint.geocode.Latitude))
-    //             this.mapService.boundsToNotifier.next(bounds)
-    //         })
-    //     ),
-    //     { dispatch: false }
-    // );
+    fitMapBoundsTo$ = createEffect(
+        () => this.actions$.pipe(
+            ofType(mapActions.fitMapBoundsTo),
+            tap(() => {
+                this.mapService.boundsToNotifier.next()
+            })
+        ),
+        { dispatch: false }
+    );
 
-    // flyToMapPoint$ = createEffect(
-    //     () => this.actions$.pipe(
-    //         ofType(mapActions.flyToMapPoint),
-            
-    //         map(args => {
-             
-    //             let point =new maplibregl.LngLat(parseFloat(args.mapPoint.geocode.Longitude), parseFloat(args.mapPoint.geocode.Latitude))
-    //             return this.mapService.flyToNotifier.
-    //         })
-    //     ),
-    //     { dispatch: false }
-    // );
+  
+
+
+    flyToMapPoint$ = createEffect(
+        () => this.actions$.pipe(
+            ofType(mapActions.flyToMapPoint),
+            tap(args => {
+                this.mapService.flyToNotifier.next(args.mapPoint)
+            })
+        ),
+        { dispatch: false }
+    );
 
 
 
