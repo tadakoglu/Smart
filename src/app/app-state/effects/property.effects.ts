@@ -17,7 +17,7 @@ export class PropertyEffects {
     setProperty$ = createEffect(() => this.actions$.pipe(
         ofType(propertyActions.setPropertyItem),
         exhaustMap(({ propertyId }) => this.service.getPropertyItem(propertyId).pipe(
-            map(resp => 
+            map(resp =>
                 propertyActions.setPropertySuccess({ property: resp })),
             catchError((err) => of(propertyActions.setPropertyFailed({ error: err }))))
         ))
@@ -26,8 +26,8 @@ export class PropertyEffects {
     /* We will navigate to property page after setting its values, this is a setProperty helper effect */
     navigateToProperty$ = createEffect(
         () => this.actions$.pipe(
-            ofType(propertyActions.setPropertySuccess),
-            tap(({ property }) => this.router.navigate(['/list/property/' + property.propertyID]))
+            ofType(propertyActions.navigateToProperty),
+            tap((property) => this.router.navigate(['/list/property/' + property.propertyId]))
         ),
         { dispatch: false }
     );

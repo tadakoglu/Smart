@@ -7,12 +7,14 @@ import { List, ListFilter } from '../entity/concrete/list.model';
 export interface ListState {
     list: IList;
     filter:IListFilter
+    loaded:boolean
 };
 
 
 const initialState: ListState = {
     list: new List(),
-    filter: new ListFilter()
+    filter: new ListFilter(),
+    loaded: false
 };
 
 export const reducer = createReducer(
@@ -38,6 +40,10 @@ export const reducer = createReducer(
     ),
     on(listActions.setFavoriteFilter,
         (state, { isFavorite }) => ({ ...state, filter: {...state.filter, isFavorite:isFavorite} }),
+    ),
+
+    on(listActions.setFilterAll,
+        (state, { filter }) => ({ ...state, filter: {...filter }}),
     ),
     
 );

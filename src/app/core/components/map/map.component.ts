@@ -9,6 +9,7 @@ import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
 import { Geojson } from 'src/app/app-state/entity/concrete/geo-json.model';
 import { GeolibreSource } from 'src/app/app-state/entity/concrete/geo-libre-soure.model';
 import { MAPTILER_API_KEY, MAPTILER_MAP_STYLE } from 'src/app/_infrastructure/contstants';
+import { MapService } from 'src/app/_services/map.service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -18,7 +19,7 @@ import { MAPTILER_API_KEY, MAPTILER_MAP_STYLE } from 'src/app/_infrastructure/co
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   map: Map | undefined;
-  constructor() { }
+  constructor(private mapService: MapService) { }
 
 
   ngOnInit() { }
@@ -52,15 +53,29 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           "icon-image": "custom-marker"
         }
       });
-      this.fitBounds(map.target,this.mapPoints);
-    });
+      this.fitBounds(map.target,this.mapPoints);//first initialization
+      this.mapService.boundsToNotifier.subscribe(()=>{
+        this.fitBounds(map.target,this.mapPoints);
+      })
 
+      this.mapService.flyToNotifier.subscribe(val=>{
+        map.target.flyTo({
+          center: val,
+          duration: 1250,
+          zoom: 15
+        });
+      })
+      
+      // this.fitBounds(map.target,this.mapPoints);
+    });
+    
     this.map.on('click', 'symbols', (e: any) => {
-      e.target.flyTo({
-        center: e.features[0].geometry.coordinates,
-        duration: 1250,
-        zoom: 15
-      });
+      this.onClickRecord.emit(e.features[0].properties.propertyId)
+      // e.target.flyTo({
+      //   center: e.features[0].geometry.coordinates,
+      //   duration: 1250,
+      //   zoom: 15
+      // });
 
     });
 
@@ -83,7 +98,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let geojsonArray: IGeojson[] = mapPoints.map(point => {
       let geojson: IGeojson = new Geojson();
-      geojson.properties = {}
+      geojson.properties = point.properties
       geojson.type = 'Feature'
       geojson.geometry.coordinates = [parseFloat(point.geocode.Longitude), parseFloat(point.geocode.Latitude)]
       geojson.geometry.type = 'Point'
@@ -109,7 +124,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     ]);
 
   }
-  @Output() onClickRecord = new EventEmitter<IRecord>();
+  @Output() onClickRecord = new EventEmitter<number>();
 
 
 }

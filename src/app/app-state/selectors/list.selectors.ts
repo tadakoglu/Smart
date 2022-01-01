@@ -4,18 +4,18 @@ import { IListFilter } from "../entity/abstract/i-list.model";
 import { ListState } from "../reducers/list.reducer";
 
 
-export const selectList = (appState: State) => appState.list
+export const selectListState = (appState: State) => appState.list
 // export const selectListByFeatureSelector = createFeatureSelector<State>('list')
 
 /* Select agent info of the list */
-export const selectAgentInfo = createSelector(selectList, (s: ListState) => s.list.agentInfo)
+export const selectAgentInfo = createSelector(selectListState, (s: ListState) => s.list.agentInfo)
 
 /* Select current filter */
 export const selectFilter = (appState: State) => appState.list.filter
 
 
 /* Select filtered records of the list */
-export const selectRecordsByFilter = createSelector(selectList, (s: ListState) => s.list.records.
+export const selectRecordsByFilter = createSelector(selectListState, (s: ListState) => s.list.records.
     filter((rec, index, recArr) => {
         let filter: IListFilter = s.filter // List filter
 

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IList } from '../entity/abstract/i-list.model';
+import { IList, IListFilter } from '../entity/abstract/i-list.model';
 
 export const setList = createAction(
     '[Home Page] SET_LIST_ITEMS');
@@ -30,5 +30,9 @@ export const setFavoriteFilter = createAction(
     props<{ isFavorite: boolean }>()
 );
 
+export const setFilterAll = createAction(
+    '[Home Page] SET_FAVORITE_FILTER',
+    props<{ filter:IListFilter }>()
+);
 
 

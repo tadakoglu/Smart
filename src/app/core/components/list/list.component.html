@@ -1,0 +1,11 @@
+<!-- Note that *ngrxLet="agentInfo$ as value" can also be used for instead of ngIf-->
+
+<h3>AGENT INFO</h3>
+<app-agent-info [agentInfo]="list.list.agentInfo"></app-agent-info>
+<h3>LIST FILTER</h3>
+<app-list-items-filter (onMaxPriceFilterChange)="setPriceFilter($event)"
+    (onBedroomFilterChange)="setRoomsFilter($event)" (onIsFavoriteFilterChange)="setFavoriteFilter($event)">
+</app-list-items-filter>
+<h3>LIST</h3>
+<app-list-items [records]="list.list.records" (onClickRecord)="clickRecord($event)">
+</app-list-items>

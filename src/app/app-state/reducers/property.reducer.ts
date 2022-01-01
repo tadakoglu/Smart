@@ -6,17 +6,19 @@ import { Property } from '../entity/concrete/property.model';
 
 export interface PropertyState {
     property: IProperty;
+    loaded:boolean
 };
 
 const initialState: PropertyState = {
     property: new Property(),
+    loaded: false
 };
 
 export const reducer = createReducer(
     initialState,
 
     on(propertyActions.setPropertyItem,
-        (state, {propertyId}) => ({ ...state })
+        (state, {}) => ({ ...state })
     ),
     on(propertyActions.setPropertySuccess,
         (state, { property }) => {
