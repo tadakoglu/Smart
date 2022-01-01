@@ -1,0 +1,15 @@
+.tayfunsLocationButton{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 5px 10px 10px 5px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.tayfunsLocationButton:hover{
+    box-shadow: rgba(0, 0, 0, 0.192) 0px 4px 12px;
+}

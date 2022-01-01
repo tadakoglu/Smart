@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import * as GeoJSON from 'geojson';
 import * as maplibregl from 'maplibre-gl';
-import { Map, Marker, NavigationControl } from 'maplibre-gl';
+import { Map, Marker, NavigationControl, Popup } from 'maplibre-gl';
 import { concatMap, filter, startWith, Subject, Subscription, takeUntil } from 'rxjs';
 import { IGeojson } from 'src/app/app-state/entity/abstract/i-geo-json.model';
 import { IGeolibreSource } from 'src/app/app-state/entity/abstract/i-geo-libre-source.model';
@@ -41,6 +41,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         if (error) throw error;
         map.target.addImage('smart-marker', image);
       })
+
+      this.addMyLocation(map.target)
 
       map.target.addSource("points", this.getSourceJSONFrom(this.mapPoints));
 
@@ -117,9 +119,29 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     let val: maplibregl.LngLat = new maplibregl.LngLat(parseFloat(mapPoint.geocode.Longitude), parseFloat(mapPoint.geocode.Latitude));
     map.flyTo({
       center: val,
-      duration: 1250,
-      zoom: 15
+      duration: 2000,
+      zoom: 15,
+      
     });
+
+  }
+
+  addMyLocation(map: Map) {
+    let location:any = [28.979530, 41.015137]
+    let el = document.createElement('div');
+    el.className = 'marker';
+    el.style.backgroundImage = 'url(/assets/markers/tayfun.png)';
+    el.style.width = '100px';
+    el.style.height = '100px';
+
+    // create the popup
+    let popup = new Popup({ offset: 25 }).setText(
+      'Hi, I am Tayfun Adakoğlu from Turkey! Greetings!'
+    );
+
+    new Marker(el)
+      .setLngLat(location).setPopup(popup)
+      .addTo(map)
 
   }
 
