@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from './app-state';
+import * as ListActions from 'src/app/app-state/actions/list.actions'
 
 @Component({
   selector: 'app-root',
@@ -11,6 +14,17 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   /* Reference : https://github.com/tadakoglu/change-detection-tree */
 
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  /**
+   *
+   */
+  constructor(private readonly store: Store<State>) {
+    
+    this.store.dispatch(ListActions.setList());
+  }
+  ngOnInit(): void {
+   
+
+  }
   title = 'Smart-Tayfun-Adakoğlu';
 }

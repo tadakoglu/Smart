@@ -26,7 +26,6 @@ export class ListViewComponent implements OnInit, OnDestroy {
 
   constructor(private readonly store: Store<State>, private activatedRoute: ActivatedRoute, private mapService: MapService) {
     this.listState$ = this.store.select(selectListState).pipe(takeUntil(this.destroy$))
-    this.store.dispatch(ListActions.setList());
     // bound to operation on init
   }
   public paramsSub$: any
@@ -34,7 +33,6 @@ export class ListViewComponent implements OnInit, OnDestroy {
 
     this.paramsSub$ = this.activatedRoute.params.subscribe(val => {
       console.log("list view reactivated ")
-    
       this.mapService.boundsToNotifier.next()
     });
 
