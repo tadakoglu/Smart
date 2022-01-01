@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable, Subject, takeUntil } from 'rxjs';
 import { State } from 'src/app/app-state';
@@ -16,7 +16,7 @@ import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
   styleUrls: ['./property-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PropertyViewComponent implements OnInit, OnDestroy {
+export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -40,7 +40,11 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     })
 
   }
-
+  ngAfterViewInit(): void {
+    console.log("PropertyViewComponent init called")
+    console.log(this.activatedRoute.params);
+  
+  }
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();

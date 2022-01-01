@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from './app-state';
 import {Title} from "@angular/platform-browser";
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,10 +14,14 @@ import {Title} from "@angular/platform-browser";
   /* Reference : https://github.com/tadakoglu/change-detection-tree */
 
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   
-  constructor(private titleService: Title) {
+  constructor(private titleService: Title, private route: ActivatedRoute) {
     this.titleService.setTitle(this.title);
+  }
+  ngAfterViewInit(): void {
+    console.log("app after view init called")
+    console.log(this.route.params);
   }
   ngOnInit(): void {
    
