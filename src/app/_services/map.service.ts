@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as maplibregl from 'maplibre-gl';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 import { IMapPoint } from '../app-state/entity/abstract/i-map-point.model';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class MapService {
   constructor() { }
 
   public mapLoaded = new BehaviorSubject<boolean>(false)
-  public flyToNotifier = new Subject<IMapPoint>()
+  public flyToNotifier = new ReplaySubject<IMapPoint>(1)
   public boundsToNotifier = new Subject<void>()
 
   get onFlyTo(): Observable<IMapPoint> {

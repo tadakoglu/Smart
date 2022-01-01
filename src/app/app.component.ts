@@ -14,15 +14,12 @@ import { ActivatedRoute } from '@angular/router';
   /* Reference : https://github.com/tadakoglu/change-detection-tree */
 
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   
-  constructor(private titleService: Title, private route: ActivatedRoute) {
+  constructor(private titleService: Title) {
     this.titleService.setTitle(this.title);
   }
-  ngAfterViewInit(): void {
-    console.log("app after view init called")
-    console.log(this.route.params);
-  }
+ 
   ngOnInit(): void {
    
   }

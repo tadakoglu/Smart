@@ -16,7 +16,7 @@ import { MapService } from 'src/app/_services/map.service';
   styleUrls: ['./list-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListViewComponent implements OnInit, OnDestroy,AfterViewInit {
+export class ListViewComponent implements OnInit, OnDestroy{
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -25,10 +25,6 @@ export class ListViewComponent implements OnInit, OnDestroy,AfterViewInit {
 
   constructor(private readonly store: Store<State>, private activatedRoute: ActivatedRoute, private mapService: MapService) {
     this.listState$ = this.store.select(selectListState).pipe(takeUntil(this.destroy$))
-  }
-  ngAfterViewInit(): void {
-    console.log("ListViewComponent init called")
-    console.log(this.activatedRoute.params);
   }
 
   ngOnInit() {

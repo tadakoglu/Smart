@@ -19,6 +19,9 @@ import { PropertyEffects } from './app-state/effects/property.effects';
 import ListMockService from './_services/mocks/list-mock.service';
 import PropertyMockService from './_services/mocks/property-mock.service';
 import { MapService } from './_services/map.service';
+import { MapComponent } from './core/components/map/map.component';
+import { ListViewComponent } from './home/list-view/list-view.component';
+import { PropertyViewComponent } from './home/property-view/property-view.component';
 
 @NgModule({
   declarations: [

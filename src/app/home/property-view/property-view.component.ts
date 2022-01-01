@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable, Subject, takeUntil } from 'rxjs';
+import { combineLatest, filter, Observable, Subject, takeUntil } from 'rxjs';
 import { State } from 'src/app/app-state';
 import { selectProperty } from 'src/app/app-state/selectors/property.selectors';
 import { IProperty } from 'src/app/app-state/entity/abstract/i-property.model';
@@ -16,7 +16,7 @@ import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
   styleUrls: ['./property-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PropertyViewComponent implements OnInit, OnDestroy {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -32,7 +32,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
       let propertyId = val['PropertyId']
       this.store.dispatch(PropertyActions.setPropertyItem({ propertyId: propertyId }));
     })
-    this.property$.pipe(takeUntil(this.destroy$)).subscribe(val => {
+    this.property$.pipe(takeUntil(this.destroy$), filter(p => p.propertyID != 0)).subscribe(val => {
       let mapPoint: IMapPoint = new MapPoint()
       mapPoint.geocode.Latitude = val.geocode.Latitude
       mapPoint.geocode.Longitude = val.geocode.Longitude
@@ -40,11 +40,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     })
 
   }
-  ngAfterViewInit(): void {
-    console.log("PropertyViewComponent init called")
-    console.log(this.activatedRoute.params);
-  
-  }
+
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
