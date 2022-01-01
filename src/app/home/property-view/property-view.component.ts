@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable, skipWhile, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
+import { combineLatest, Observable, Subject, takeUntil } from 'rxjs';
 import { State } from 'src/app/app-state';
 import { selectProperty } from 'src/app/app-state/selectors/property.selectors';
 import { IProperty } from 'src/app/app-state/entity/abstract/i-property.model';
 import * as PropertyActions from 'src/app/app-state/actions/property.actions'
 import { MapService } from 'src/app/_services/map.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as maplibregl from 'maplibre-gl';
-import { IGeocode } from 'src/app/app-state/entity/abstract/i-geocode.model';
+import { ActivatedRoute } from '@angular/router';
+import { MapPoint } from 'src/app/app-state/entity/concrete/map-point.model';
+import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
 
 @Component({
   selector: 'app-property-view',
@@ -27,11 +27,16 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    combineLatest([this.activatedRoute.params, this.property$]).pipe(takeUntil(this.destroy$)).subscribe(val => {
-      let propertyId = val[0]['PropertyId']
-      this.store.dispatch(PropertyActions.setPropertyItem({ propertyId: propertyId })); // navigation already occured we will set only the values
-      let geo = new maplibregl.LngLat(parseFloat(val[1].geocode.Longitude), parseFloat(val[1].geocode.Latitude))
-      this.mapService.flyToNotifier.next(geo)
+    //combineLatest
+    this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe(val => {
+      let propertyId = val['PropertyId']
+      this.store.dispatch(PropertyActions.setPropertyItem({ propertyId: propertyId }));
+    })
+    this.property$.pipe(takeUntil(this.destroy$)).subscribe(val => {
+      let mapPoint: IMapPoint = new MapPoint()
+      mapPoint.geocode.Latitude = val.geocode.Latitude
+      mapPoint.geocode.Longitude = val.geocode.Longitude
+      this.mapService.flyToNotifier.next(mapPoint)
     })
 
   }

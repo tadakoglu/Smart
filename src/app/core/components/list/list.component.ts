@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
-import { IAgentInfo, IListFilter, IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
-import { AgentInfo, ListFilter } from 'src/app/app-state/entity/concrete/list.model';
+import { IListFilter, IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
 import { ListState } from 'src/app/app-state/reducers/list.reducer';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  styleUrls: ['./list.component.css'],
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class ListComponent implements OnInit {
 
@@ -18,14 +18,6 @@ export class ListComponent implements OnInit {
 
   @Input()
   public list!: ListState
-
-  // @Input()
-  // public agentInfo: IAgentInfo = new AgentInfo();
-  // @Input()
-  // public filter: IListFilter = new ListFilter()
-  // @Input()
-  // public records: IRecord[] = []
-
 
   setPriceFilter($eventArgs: any) {
     let maxPrice: number = $eventArgs;

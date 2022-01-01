@@ -1,2 +1,11 @@
 <h3>PROPERTY</h3>
 {{property.propertyID}}
+<h4>PLANS</h4>
+<ul>
+    <li *ngFor="let plan of property.floorplans">
+        <h5>Bedrooms:{{plan.bed}}</h5>
+        <h5>Bath: {{plan.bath}}</h5>
+        <h5>Square Feet: {{plan.sqft}}</h5>
+        <h5>Price: {{plan.price}}</h5>
+    </li>
+</ul>

@@ -22,15 +22,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   public mapPoints$: Observable<IMapPoint[]>
 
   constructor(private readonly store: Store<State>, private activatedRoute: ActivatedRoute) {
-    this.store.dispatch(ListActions.setList());
-    this.mapPoints$ = this.store.select(selectMapPoints).pipe(takeUntil(this.destroy$))
+    this.store.dispatch(ListActions.setList()); // load all data
+    this.mapPoints$ = this.store.select(selectMapPoints).pipe(takeUntil(this.destroy$)) // load map points to map
   }
 
   ngOnInit() {}
 
   clickRecordOnTheMap($eventArgs: any) {
     let propertyId: number = $eventArgs;
-    // this.store.dispatch(PropertyActions.setPropertyItem({ propertyId: propertyId })) 
     this.store.dispatch(PropertyActions.navigateToProperty({ propertyId: propertyId }))
   }
   ngOnDestroy() {

@@ -20,9 +20,9 @@ import { MapService } from 'src/app/_services/map.service';
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
-
   map!: Map;
-  constructor(private mapService: MapService) {}
+
+  constructor(private mapService: MapService) { }
 
   ngOnInit() { }
 
@@ -32,15 +32,17 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style: `${map_style}?key=${api_key}`,
-      interactive: true
+      interactive: true,
     });
     this.map.addControl(new NavigationControl(), 'top-right');
+
     this.map.on('load', (map) => {
       map.target.loadImage(MAPTILER_MAP_DEFAULT_MARKER, (error: any, image: any) => {
         if (error) throw error;
         map.target.addImage('smart-marker', image);
       })
-      map.target.addSource("points", this.getSourceJSON(this.mapPoints));
+
+      map.target.addSource("points", this.getSourceJSONFrom(this.mapPoints));
 
       map.target.addLayer({
         "id": "symbols",
@@ -51,19 +53,19 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
+      map.target.on('click', 'symbols', (e: any) => {
+        this.onClickRecord.emit(e.features[0].properties.propertyId)
+      });
 
       this.mapService.boundsToNotifier.pipe(takeUntil(this.destroy$), startWith(this.mapPoints)).subscribe(() => {
-        this.fitBounds(this.map, this.mapPoints);
+        this.fitBoundsTo(this.map, this.mapPoints);
       })
+
       this.mapService.flyToNotifier.pipe(takeUntil(this.destroy$)).subscribe(val => {
         this.flyTo(this.map, val);
       })
-
-
     });
-    this.map.on('click', 'symbols', (e: any) => {
-      this.onClickRecord.emit(e.features[0].properties.propertyId)
-    });
+
   }
   ngOnDestroy(): void {
     this.map?.remove();
@@ -75,11 +77,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  @Input() mapPoints: IMapPoint[] = []; /* These includes PropertyIds and Geocodes */
+  @Input()
+  public mapPoints: IMapPoint[] = []; /* These includes PropertyIds and Geocodes */
+
+  @Output()
+  onClickRecord = new EventEmitter<number>();
+
+
 
   // Note that initializer design patterns can be used here but because values are pretty long, I won't use it here to make the code more readible
-  getSourceJSON(mapPoints: IMapPoint[]): any {
-
+  getSourceJSONFrom(mapPoints: IMapPoint[]): any {
     let geojsonArray: IGeojson[] = mapPoints.map(point => {
       let geojson: IGeojson = new Geojson();
       geojson.properties = point.properties
@@ -91,10 +98,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     let source: IGeolibreSource = new GeolibreSource();
     source.type = 'geojson'
     source.data.features = geojsonArray;
-
     return source
   }
-  fitBounds(map: Map, mapPoints: IMapPoint[]): any {
+  fitBoundsTo(map: Map, mapPoints: IMapPoint[]): any {
     let lots: number[] = mapPoints.map(p => parseFloat(p.geocode.Longitude))
     let lats: number[] = mapPoints.map(p => parseFloat(p.geocode.Latitude))
 
@@ -107,7 +113,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     ]);
 
   }
-  flyTo(map: Map, val: maplibregl.LngLat): any {
+  flyTo(map: Map, mapPoint: IMapPoint): any {
+    let val: maplibregl.LngLat = new maplibregl.LngLat(parseFloat(mapPoint.geocode.Longitude), parseFloat(mapPoint.geocode.Latitude));
     map.flyTo({
       center: val,
       duration: 1250,
@@ -115,7 +122,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
   }
-  @Output() onClickRecord = new EventEmitter<number>();
+
 
 
 }

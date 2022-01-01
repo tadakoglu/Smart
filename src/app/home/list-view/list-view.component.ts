@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/app-state';
-import { selectListState, selectRecordsByFilter } from 'src/app/app-state/selectors/list.selectors';
+import { selectListState } from 'src/app/app-state/selectors/list.selectors';
 import * as ListActions from 'src/app/app-state/actions/list.actions'
 import * as PropertyActions from 'src/app/app-state/actions/property.actions'
-import { BehaviorSubject, Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { IListFilter, IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
 import { ListState } from 'src/app/app-state/reducers/list.reducer';
-import { Record } from 'src/app/app-state/entity/concrete/list.model';
 import { ActivatedRoute } from '@angular/router';
 import { MapService } from 'src/app/_services/map.service';
 
@@ -32,7 +31,7 @@ export class ListViewComponent implements OnInit, OnDestroy {
     // when list view activated, show all pins on the map
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe(val => {
       console.log("list view reactivated ")
-      this.mapService.boundsToNotifier.next() 
+      this.mapService.boundsToNotifier.next()
     })
   }
 

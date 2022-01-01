@@ -4,4 +4,6 @@
     height: 50vh;
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 10px;
+  
 }
