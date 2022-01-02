@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MapService } from './_services/map.service';
 import { IMapPoint } from './app-state/entity/abstract/i-map-point.model';
 import { MapPoint } from './app-state/entity/concrete/map-point.model';
+import { TAYFUNS_HOME } from './_infrastructure/contstants';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -29,9 +30,9 @@ export class AppComponent implements OnInit {
   title = 'Smart-Tayfun-Adakoğlu';
 
   showTayfun() {
-    let loc: IMapPoint = new MapPoint()
-    loc.geocode.Longitude = '28.979530'
-    loc.geocode.Latitude = ' 41.015137'
-    this.mapService.flyToNotifier.next(loc)
+    let tayfunsHome: IMapPoint = new MapPoint()
+    tayfunsHome.geocode.Longitude = TAYFUNS_HOME.longitude.toString()
+    tayfunsHome.geocode.Latitude = TAYFUNS_HOME.latitude.toString()
+    this.mapService.flyToNotifier.next(tayfunsHome)
   }
 }

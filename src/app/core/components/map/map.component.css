@@ -15,4 +15,15 @@
     left: 10px;
     bottom: 10px;
     z-index: 999;
+  } 
+  .smartmark {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 999;
+    width: auto;
+  }  
+  .smartmark .icon {
+    height: 40px;
+    width: auto;
   }

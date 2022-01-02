@@ -9,7 +9,7 @@ import { IRecord } from 'src/app/app-state/entity/abstract/i-list.model';
 import { IMapPoint } from 'src/app/app-state/entity/abstract/i-map-point.model';
 import { Geojson } from 'src/app/app-state/entity/concrete/geo-json.model';
 import { GeolibreSource } from 'src/app/app-state/entity/concrete/geo-libre-soure.model';
-import { MAPTILER_API_KEY, MAPTILER_MAP_DEFAULT_MARKER, MAPTILER_MAP_STYLE } from 'src/app/_infrastructure/contstants';
+import { MAPTILER_API_KEY, MAPTILER_MAP_DEFAULT_MARKER, MAPTILER_MAP_STYLE, TAYFUNS_HOME } from 'src/app/_infrastructure/contstants';
 import { MapService } from 'src/app/_services/map.service';
 @Component({
   selector: 'app-map',
@@ -34,14 +34,15 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       style: `${map_style}?key=${api_key}`,
       interactive: true,
     });
+
     this.map.addControl(new NavigationControl(), 'top-right');
-
     this.map.on('load', (map) => {
-      map.target.loadImage(MAPTILER_MAP_DEFAULT_MARKER, (error: any, image: any) => {
-        if (error) throw error;
-        map.target.addImage('smart-marker', image);
-      })
 
+      this.map.loadImage(MAPTILER_MAP_DEFAULT_MARKER, (error: any, image: any) => {
+        // if (error) throw error;
+        this.map.addImage('smart-marker', image);
+      })
+      
       this.addMyLocation(map.target)
 
       map.target.addSource("points", this.getSourceJSONFrom(this.mapPoints));
@@ -121,13 +122,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       center: val,
       duration: 2000,
       zoom: 15,
-      
+
     });
 
   }
 
   addMyLocation(map: Map) {
-    let location:any = [28.979530, 41.015137]
+    let tayfunsHome:maplibregl.LngLat = new maplibregl.LngLat(TAYFUNS_HOME.longitude, TAYFUNS_HOME.latitude)
     let el = document.createElement('div');
     el.className = 'marker';
     el.style.backgroundImage = 'url(/assets/markers/tayfun.png)';
@@ -140,7 +141,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     new Marker(el)
-      .setLngLat(location).setPopup(popup)
+      .setLngLat(tayfunsHome).setPopup(popup)
       .addTo(map)
 
   }

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, BehaviorSubject, Subject, EMPTY } from 'rxjs';
-import { switchMap, take, filter, catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { AuthDataService } from '../_services/auth-data.service';
 
 @Injectable()
