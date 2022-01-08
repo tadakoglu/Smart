@@ -1,5 +1,10 @@
 # SmartTayfun
 
+SHOWCASE VIDEO:
+
+https://www.loom.com/share/7354279c8a6e4ef28a87717c8a7b3053
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.2.
 
 ## Development server
